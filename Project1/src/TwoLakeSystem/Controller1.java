@@ -43,10 +43,10 @@ public class Controller1 {
 		c1Previous.SetValue("No Action");
 		pn.PlaceList.add(c1Previous);
 
-		DataTransfer m12 = new DataTransfer();
-		m12.SetName("m12");
-		m12.Value = new TransferOperation("localhost", "1081", "m12");
-		pn.PlaceList.add(m12);
+		DataTransfer m13 = new DataTransfer();
+		m13.SetName("m13");
+		m13.Value = new TransferOperation("localhost", "1082", "m13");
+		pn.PlaceList.add(m13);
 
 		DataString po = new DataString();
 		po.SetName("po");
@@ -156,7 +156,7 @@ public class Controller1 {
 		grdT1.condition = T1Ct1;
 		
 		grdT1.Activations.add(new Activation(t1, "c1", TransitionOperation.Move, "po"));
-		grdT1.Activations.add(new Activation(t1, "c1", TransitionOperation.SendOverNetwork, "m12"));
+		grdT1.Activations.add(new Activation(t1, "c1", TransitionOperation.SendOverNetwork, "m13"));
 
 		t1.GuardMappingList.add(grdT1);
 		

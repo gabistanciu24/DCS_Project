@@ -1,4 +1,4 @@
-package p1;
+package Test;
 
 import Components.Activation;
 import Components.Condition;
@@ -12,29 +12,11 @@ import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
 
-public class Exp2 {
+public class RoundAbout {
     public static void main(String[] args) {
-
         PetriNet pn = new PetriNet();
         pn.PetriNetName = "Main Petri";
-        pn.NetworkPort = 1081;
-
-        DataCarQueue p1= new DataCarQueue();
-        p1.SetName("P1");
-        p1.Value.Size = 3;
-        pn.PlaceList.add(p1);
-
-
-        DataCarQueue p2= new DataCarQueue();
-        p2.SetName("P2");
-        p2.Value.Size = 3;
-        pn.PlaceList.add(p2);
-
-
-        DataCarQueue p3= new DataCarQueue();
-        p3.SetName("P3");
-        p3.Value.Size = 3;
-        pn.PlaceList.add(p3);
+        pn.NetworkPort = 9009;
 
         DataCar p4 = new DataCar();
         p4.SetName("P4");
@@ -60,8 +42,22 @@ public class Exp2 {
         p9.SetName("P9");
         pn.PlaceList.add(p9);
 
+        DataCarQueue p1 = new DataCarQueue();
+        p1.SetName("P1");
+        p1.Value.Size = 3;
+        pn.PlaceList.add(p1);
 
-        // T1 ------------------------------------------------
+        DataCarQueue p2 = new DataCarQueue();
+        p2.SetName("P2");
+        p2.Value.Size = 3;
+        pn.PlaceList.add(p2);
+
+        DataCarQueue p3 = new DataCarQueue();
+        p3.SetName("P3");
+        p3.Value.Size = 3;
+        pn.PlaceList.add(p3);
+
+        //T1-----------------------------------------------------------
         PetriTransition t1 = new PetriTransition(pn);
         t1.TransitionName = "T1";
         t1.InputPlaceName.add("P1");
@@ -75,9 +71,9 @@ public class Exp2 {
         grdT1.Activations.add(new Activation(t1, "P1", TransitionOperation.PopElementWithTargetToQueue, "P2"));
         t1.GuardMappingList.add(grdT1);
 
+        t1.Delay = 0;
         pn.Transitions.add(t1);
-
-        // T2 ------------------------------------------------
+        //T2-------------------------------------------------------
         PetriTransition t2 = new PetriTransition(pn);
         t2.TransitionName = "T2";
         t2.InputPlaceName.add("P2");
@@ -91,9 +87,10 @@ public class Exp2 {
         grdT2.Activations.add(new Activation(t2, "P2", TransitionOperation.PopElementWithTargetToQueue, "P3"));
         t2.GuardMappingList.add(grdT2);
 
+        t2.Delay = 0;
         pn.Transitions.add(t2);
 
-        // T3 ------------------------------------------------
+        //T3-------------------------------------------------------
         PetriTransition t3 = new PetriTransition(pn);
         t3.TransitionName = "T3";
         t3.InputPlaceName.add("P3");
@@ -104,12 +101,13 @@ public class Exp2 {
 
         GuardMapping grdT3 = new GuardMapping();
         grdT3.condition= T3Ct1;
-        grdT3.Activations.add(new Activation(t3, "P3", TransitionOperation.PopElementWithTargetToQueue, "P1"));
+        grdT3.Activations.add(new Activation(t3, "P1", TransitionOperation.PopElementWithTargetToQueue, "P2"));
         t3.GuardMappingList.add(grdT3);
 
+        t3.Delay = 0;
         pn.Transitions.add(t3);
 
-        // T4 ------------------------------------------------
+        //T4-------------------------------------------------------------
         PetriTransition t4 = new PetriTransition(pn);
         t4.TransitionName = "T4";
         t4.InputPlaceName.add("P1");
@@ -121,9 +119,10 @@ public class Exp2 {
         grdT4.Activations.add(new Activation(t4, "P1", TransitionOperation.PopElementWithTarget, "P4"));
         t4.GuardMappingList.add(grdT4);
 
+        t4.Delay = 0;
         pn.Transitions.add(t4);
 
-        // T5 ------------------------------------------------
+        //T5-----------------------------------------------------------
         PetriTransition t5 = new PetriTransition(pn);
         t5.TransitionName = "T5";
         t5.InputPlaceName.add("P5");
@@ -137,9 +136,10 @@ public class Exp2 {
         grdT5.Activations.add(new Activation(t5, "P5", TransitionOperation.AddElement, "P1"));
         t5.GuardMappingList.add(grdT5);
 
+        t5.Delay = 0;
         pn.Transitions.add(t5);
 
-        // T6 ------------------------------------------------
+        //T6-----------------------------------------------------------
         PetriTransition t6 = new PetriTransition(pn);
         t6.TransitionName = "T6";
         t6.InputPlaceName.add("P6");
@@ -153,9 +153,9 @@ public class Exp2 {
         grdT6.Activations.add(new Activation(t6, "P6", TransitionOperation.AddElement, "P2"));
         t6.GuardMappingList.add(grdT6);
 
+        t6.Delay = 0;
         pn.Transitions.add(t6);
-
-        // T7 ------------------------------------------------
+        //T7-----------------------------------------------------------
         PetriTransition t7 = new PetriTransition(pn);
         t7.TransitionName = "T7";
         t7.InputPlaceName.add("P2");
@@ -167,9 +167,10 @@ public class Exp2 {
         grdT7.Activations.add(new Activation(t7, "P2", TransitionOperation.PopElementWithTarget, "P7"));
         t7.GuardMappingList.add(grdT7);
 
+        t7.Delay = 0;
         pn.Transitions.add(t7);
 
-        // T8 ------------------------------------------------
+        //T8-----------------------------------------------
         PetriTransition t8 = new PetriTransition(pn);
         t8.TransitionName = "T8";
         t8.InputPlaceName.add("P8");
@@ -183,9 +184,10 @@ public class Exp2 {
         grdT8.Activations.add(new Activation(t8, "P8", TransitionOperation.AddElement, "P3"));
         t8.GuardMappingList.add(grdT8);
 
+        t8.Delay = 0;
         pn.Transitions.add(t8);
 
-        // T9 ------------------------------------------------
+        //T9------------------------------------------------
         PetriTransition t9 = new PetriTransition(pn);
         t9.TransitionName = "T9";
         t9.InputPlaceName.add("P3");
@@ -197,16 +199,16 @@ public class Exp2 {
         grdT9.Activations.add(new Activation(t9, "P3", TransitionOperation.PopElementWithTarget, "P9"));
         t9.GuardMappingList.add(grdT9);
 
+        t9.Delay = 0;
         pn.Transitions.add(t9);
 
-
-
+        System.out.println("Exp1 started \n ------------------------------");
+        pn.Delay = 2000;
         //pn.Start();
 
         PetriNetWindow frame = new PetriNetWindow(false);
         frame.petriNet = pn;
         frame.setVisible(true);
-
 
 
     }

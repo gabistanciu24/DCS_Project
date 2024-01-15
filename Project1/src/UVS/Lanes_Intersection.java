@@ -9,6 +9,8 @@ import Components.PetriTransition;
 import DataObjects.DataCar;
 import DataObjects.DataCarQueue;
 import DataObjects.DataString;
+import DataObjects.DataTransfer;
+import DataOnly.TransferOperation;
 import Enumerations.LogicConnector;
 import Enumerations.TransitionCondition;
 import Enumerations.TransitionOperation;
@@ -27,9 +29,20 @@ public class Lanes_Intersection {
 		green.SetValue("green");
 		pn.ConstantPlaceList.add(green);
 
+		DataString full = new DataString();
+		full.SetName("full");
+		full.SetValue("full");
+		pn.ConstantPlaceList.add(full);
+
 		// -------------------------------------------------------------------
 		// -------------------------------Lane1--------------------------------
 		// --------------------------------------------------------------------
+
+		//Implementing OP1 as an output channel connected to the controller
+		DataTransfer OP1 = new DataTransfer();
+		OP1.SetName("OP1");
+		OP1.Value = new TransferOperation("localhost", "1081", "in1");
+		pn.PlaceList.add(OP1);
 
 		DataCar p1 = new DataCar();
 		p1.SetName("P_a1");
@@ -52,6 +65,12 @@ public class Lanes_Intersection {
 		// --------------------------------Lane2-----------------------------------------------
 		// -------------------------------------------------------------------------------------
 
+		//Implementing OP2 as an output channel connected to the controller
+		DataTransfer OP2 = new DataTransfer();
+		OP2.SetName("OP2");
+		OP2.Value = new TransferOperation("localhost", "1082", "in2");
+		pn.PlaceList.add(OP2);
+
 		DataCar p5 = new DataCar(); //p5.Printable = false;
 		p5.SetName("P_a2");
 		pn.PlaceList.add(p5);
@@ -73,6 +92,12 @@ public class Lanes_Intersection {
 		// --------------------------------Lane3-----------------------------------------------
 		// -------------------------------------------------------------------------------------
 
+		//Implementing OP3 as an output channel connected to the controller
+		DataTransfer OP3 = new DataTransfer();
+		OP3.SetName("OP3");
+		OP3.Value = new TransferOperation("localhost", "1082", "in3");
+		pn.PlaceList.add(OP3);
+
 		DataCar p9 = new DataCar(); //p9.Printable = false;
 		p9.SetName("P_a3");
 		pn.PlaceList.add(p9);
@@ -93,6 +118,12 @@ public class Lanes_Intersection {
 		// -------------------------------------------------------------------------------------
 		// --------------------------------Lane4-----------------------------------------------
 		// -------------------------------------------------------------------------------------
+
+		//Implementing OP4 as an output channel connected to the controller
+		DataTransfer OP4 = new DataTransfer();
+		OP4.SetName("OP4");
+		OP4.Value = new TransferOperation("localhost", "1082", "in4");
+		pn.PlaceList.add(OP4);
 
 		DataCar p13 = new DataCar();
 		p13.SetName("P_a4");
@@ -154,6 +185,12 @@ public class Lanes_Intersection {
 		// ----------------------------Exit lane 4-------------------------------------
 		// ----------------------------------------------------------------------------
 
+
+		DataTransfer PO4N = new DataTransfer();
+		PO4N.SetName("PO4N");
+		PO4N.Value = new TransferOperation("localhost", "9009", "P5");
+		pn.PlaceList.add(PO4N);
+
 		DataCarQueue p23 = new DataCarQueue();
 		p23.Value.Size = 3;
 		p23.SetName("P_o4");
@@ -166,6 +203,7 @@ public class Lanes_Intersection {
 		// -------------------------------------------------------------------------------------------
 		// --------------------------------Intersection-----------------------------------------------
 		// -------------------------------------------------------------------------------------------
+
 
 		DataCarQueue p25 = new DataCarQueue();
 		p25.Value.Size = 3;
@@ -186,6 +224,16 @@ public class Lanes_Intersection {
 		grdT1.condition = T1Ct1;
 		grdT1.Activations.add(new Activation(t1, "P_a1", TransitionOperation.AddElement, "P_x1"));
 		t1.GuardMappingList.add(grdT1);
+
+		Condition T1Ct3 = new Condition(t1, "P_a1", TransitionCondition.NotNull);
+		Condition T1Ct4 = new Condition(t1, "P_x1", TransitionCondition.CanNotAddCars);
+		T1Ct3.SetNextCondition(LogicConnector.AND, T1Ct4);
+
+		GuardMapping grdT1a = new GuardMapping();
+		grdT1a.condition= T1Ct3;
+		grdT1a.Activations.add(new Activation(t1, "full", TransitionOperation.SendOverNetwork, "OP1"));
+		grdT1a.Activations.add(new Activation(t1, "P_a1", TransitionOperation.Move, "P_a1"));
+		t1.GuardMappingList.add(grdT1a);
 
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
@@ -225,6 +273,16 @@ public class Lanes_Intersection {
 		grdT3.Activations.add(new Activation(t3, "P_a2", TransitionOperation.AddElement, "P_x2"));
 		t3.GuardMappingList.add(grdT3);
 
+		Condition T3Ct3 = new Condition(t3, "P_a2", TransitionCondition.NotNull);
+		Condition T3Ct4 = new Condition(t3, "P_x2", TransitionCondition.CanNotAddCars);
+		T3Ct3.SetNextCondition(LogicConnector.AND, T3Ct4);
+
+		GuardMapping grdT3a = new GuardMapping();
+		grdT3a.condition= T3Ct3;
+		grdT3a.Activations.add(new Activation(t3, "full", TransitionOperation.SendOverNetwork, "OP2"));
+		grdT3a.Activations.add(new Activation(t3, "P_a2", TransitionOperation.Move, "P_a2"));
+		t3.GuardMappingList.add(grdT3a);
+
 		t3.Delay = 0;
 		pn.Transitions.add(t3);
 
@@ -262,6 +320,16 @@ public class Lanes_Intersection {
 		grdT5.Activations.add(new Activation(t5, "P_a3", TransitionOperation.AddElement, "P_x3"));
 		t5.GuardMappingList.add(grdT5);
 
+		Condition T5Ct3 = new Condition(t5, "P_a3", TransitionCondition.NotNull);
+		Condition T5Ct4 = new Condition(t5, "P_x3", TransitionCondition.CanNotAddCars);
+		T5Ct3.SetNextCondition(LogicConnector.AND, T5Ct4);
+
+		GuardMapping grdT5a = new GuardMapping();
+		grdT5a.condition= T5Ct3;
+		grdT5a.Activations.add(new Activation(t5, "full", TransitionOperation.SendOverNetwork, "OP3"));
+		grdT5a.Activations.add(new Activation(t5, "P_a3", TransitionOperation.Move, "P_a3"));
+		t5.GuardMappingList.add(grdT5a);
+
 		t5.Delay = 0;
 		pn.Transitions.add(t5);
 
@@ -298,6 +366,17 @@ public class Lanes_Intersection {
 		grdT7.condition = T7Ct1;
 		grdT7.Activations.add(new Activation(t7, "P_a4", TransitionOperation.AddElement, "P_x4"));
 		t7.GuardMappingList.add(grdT7);
+
+		Condition T7Ct3 = new Condition(t7, "P_a4", TransitionCondition.NotNull);
+		Condition T7Ct4 = new Condition(t7, "P_x4", TransitionCondition.CanNotAddCars);
+		T7Ct3.SetNextCondition(LogicConnector.AND, T7Ct4);
+
+		GuardMapping grdT7a = new GuardMapping();
+		grdT7a.condition= T7Ct3;
+		grdT7a.Activations.add(new Activation(t7, "full", TransitionOperation.SendOverNetwork, "OP4"));
+		grdT7a.Activations.add(new Activation(t7, "P_a4", TransitionOperation.Move, "P_a4"));
+		t7.GuardMappingList.add(grdT7a);
+
 
 		t7.Delay = 0;
 		pn.Transitions.add(t7);
@@ -539,6 +618,23 @@ public class Lanes_Intersection {
 		t20.Delay = 0;
 		pn.Transitions.add(t20);
 
+
+		// T21-----------------------------------------------------
+		///
+
+		PetriTransition t21 = new PetriTransition(pn);
+		t21.TransitionName = "T_g4n";
+		t21.InputPlaceName.add("P_o4Exit");
+
+		Condition T21Ct1 = new Condition(t21,"P_o4Exit",TransitionCondition.NotNull);
+
+		GuardMapping grdT21 = new GuardMapping();
+		grdT21.condition = T21Ct1;
+		grdT21.Activations.add(new Activation(t21, "P_o4Exit", TransitionOperation.SendOverNetwork, "PO4N"));
+		t21.GuardMappingList.add(grdT21);
+
+		t21.Delay = 0;
+		pn.Transitions.add(t21);
 		// -------------------------------------------------------------------------------------
 		// ----------------------------PNStart-------------------------------------------------
 		// -------------------------------------------------------------------------------------

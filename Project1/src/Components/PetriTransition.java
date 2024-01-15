@@ -14,6 +14,7 @@ import DataObjects.DataString;
 import DataObjects.DataSubPetriNet;
 import Enumerations.PetriObjectType;
 import Interfaces.PetriObject;
+import PetriDataPackage.Place;
 import Utilities.Functions;
 
 public class PetriTransition implements PetriObject, Serializable {
@@ -27,6 +28,8 @@ public class PetriTransition implements PetriObject, Serializable {
 		// TODO Auto-generated method stub
 
 	}
+
+
 
 	@Override
 	public PetriObjectType GetType() {

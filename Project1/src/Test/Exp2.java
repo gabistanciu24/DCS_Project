@@ -18,9 +18,7 @@ public class Exp2 {
 		PetriNet pn = new PetriNet();
 		pn.PetriNetName = "Main Petri";
 		pn.NetworkPort = 1081;
-
-
-
+		
 		DataCar p1 = new DataCar();
 		p1.SetName("P1");
 		pn.PlaceList.add(p1);

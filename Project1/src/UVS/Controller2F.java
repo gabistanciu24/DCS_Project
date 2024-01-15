@@ -17,7 +17,7 @@ public class Controller2F {
 		PetriNet pn = new PetriNet();
 		pn.PetriNetName = "Controller";
 		pn.SetName("Controller");
-		pn.NetworkPort = 1081;
+		pn.NetworkPort = 1082;
 		
 		DataString ini = new DataString();
 		//ini.Printable = false;
@@ -212,7 +212,7 @@ public class Controller2F {
 		// ----------------------------PN Start-------------------------------------------------
 		// -------------------------------------------------------------------------------------
 
-		System.out.println("Exp1 started \n ------------------------------");
+		System.out.println("Controller2F started \n ------------------------------");
 		pn.Delay = 2000;
 		// pn.Start();
 

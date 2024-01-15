@@ -41,9 +41,9 @@ public class Controller2 {
 		c2Previous.SetValue("No Action");
 		pn.PlaceList.add(c2Previous);
 
-		DataString m12 = new DataString();
-		m12.SetName("m12");
-		pn.PlaceList.add(m12);
+		DataString m32 = new DataString();
+		m32.SetName("m32");
+		pn.PlaceList.add(m32);
 
 		DataString po = new DataString();
 		po.SetName("po");
@@ -74,7 +74,7 @@ public class Controller2 {
 		t0.TransitionName = "T0";
 		t0.InputPlaceName.add("h2");
 		t0.InputPlaceName.add("hr2");
-		t0.InputPlaceName.add("m12");
+		t0.InputPlaceName.add("m32");
 		t0.InputPlaceName.add("c2Previous");
 		t0.InputPlaceName.add("po2");
 
@@ -84,7 +84,7 @@ public class Controller2 {
 		Condition T0Ct3 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct4 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct5 = new Condition(t0, "hr2", TransitionCondition.MoreThan, "h2");
-		Condition T0Ct6 = new Condition(t0, "m12", TransitionCondition.Equal, "Decrease");
+		Condition T0Ct6 = new Condition(t0, "m32", TransitionCondition.Equal, "Decrease");
 
 		T0Ct5.SetNextCondition(LogicConnector.AND, T0Ct6);
 		T0Ct4.SetNextCondition(LogicConnector.AND, T0Ct5);
@@ -107,7 +107,7 @@ public class Controller2 {
 		Condition T0Ct9 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct10 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct11 = new Condition(t0, "hr2", TransitionCondition.MoreThan, "h2");
-		Condition T0Ct12 = new Condition(t0, "m12", TransitionCondition.Equal, "Increase");
+		Condition T0Ct12 = new Condition(t0, "m32", TransitionCondition.Equal, "Increase");
 
 		T0Ct11.SetNextCondition(LogicConnector.AND, T0Ct12);
 		T0Ct10.SetNextCondition(LogicConnector.AND, T0Ct11);
@@ -151,7 +151,7 @@ public class Controller2 {
 		Condition T0Ct20 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct21 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct22 = new Condition(t0, "hr2", TransitionCondition.Equal, "h2");
-		Condition T0Ct23 = new Condition(t0, "m12", TransitionCondition.Equal, "Decrease");
+		Condition T0Ct23 = new Condition(t0, "m32", TransitionCondition.Equal, "Decrease");
 
 		T0Ct22.SetNextCondition(LogicConnector.AND, T0Ct23);
 		T0Ct21.SetNextCondition(LogicConnector.AND, T0Ct22);
@@ -174,7 +174,7 @@ public class Controller2 {
 		Condition T0Ct26 = new Condition(t0, "c2Previous", TransitionCondition.NotNull);
 		Condition T0Ct27 = new Condition(t0, "po2", TransitionCondition.NotNull);
 		Condition T0Ct28 = new Condition(t0, "hr2", TransitionCondition.Equal, "h2");
-		Condition T0Ct29 = new Condition(t0, "m12", TransitionCondition.Equal, "Increase");
+		Condition T0Ct29 = new Condition(t0, "m32", TransitionCondition.Equal, "Increase");
 
 		T0Ct28.SetNextCondition(LogicConnector.AND, T0Ct29);
 		T0Ct27.SetNextCondition(LogicConnector.AND, T0Ct28);

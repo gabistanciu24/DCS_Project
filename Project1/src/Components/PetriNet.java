@@ -13,6 +13,7 @@ import Enumerations.PetriNetState;
 import Enumerations.PetriObjectType;
 import Interfaces.PetriObject;
 import PetriDataPackage.PetriData;
+import PetriDataPackage.Place;
 import Utilities.DataOverNetwork;
 import Utilities.Functions;
 import MetricsClasses.Metrics;
@@ -25,6 +26,8 @@ public class PetriNet implements PetriObject, Runnable, Cloneable, Serializable 
 		util.ComputeMatrics(this);
 		return Metrics.toString();
 	}
+
+
 	
 	/**
 	 * 

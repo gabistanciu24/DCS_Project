@@ -20,7 +20,8 @@ import Enumerations.TransitionOperation;
 public class Exp3_Part1 {
 
 	public static PetriNet PN3() {
-		// ----------------------- SubPetri ------------------------------------
+
+		// ----------------------- SubPetri1 ------------------------------------
 		PetriNet mpn = new PetriNet();
 		mpn.PetriNetName = "PN3";
 		mpn.NetworkPort = 0;
@@ -137,6 +138,121 @@ public class Exp3_Part1 {
 		return mpn;
 	}
 
+	public static PetriNet PN4() {
+		// ----------------------- SubPetri2 ------------------------------------
+		PetriNet mpn = new PetriNet();
+		mpn.PetriNetName = "PN4";
+		mpn.NetworkPort = 0;
+
+		DataFloat constantVal1 = new DataFloat();
+		constantVal1.SetName("constantVal1");
+		constantVal1.SetValue(0.2f);
+		mpn.ConstantPlaceList.add(constantVal1);
+
+		DataFloat constantVal2 = new DataFloat();
+		constantVal2.SetName("constantVal2");
+		constantVal2.SetValue(4.0f);
+		mpn.ConstantPlaceList.add(constantVal2);
+
+		DataFloat p31 = new DataFloat();
+		p31.SetName("p31");
+		mpn.PlaceList.add(p31);
+
+		DataFloat p32 = new DataFloat();
+		p32.SetName("p32");
+		mpn.PlaceList.add(p32);
+
+		DataFloat p33 = new DataFloat();
+		p33.SetName("p33");
+		mpn.PlaceList.add(p33);
+
+		DataTransfer p34 = new DataTransfer();
+		p34.SetName("p34");
+		p34.Value = new TransferOperation("localhost", "1080", "p6");
+		mpn.PlaceList.add(p34);
+
+
+		// T31 ------------------------------------------------
+		PetriTransition t31 = new PetriTransition(mpn);
+		t31.TransitionName = "t31";
+		t31.InputPlaceName.add("p31");
+
+		Condition T31Ct1 = new Condition(t31, "p31", TransitionCondition.NotNull);
+
+		GuardMapping grdT31 = new GuardMapping();
+		grdT31.condition = T31Ct1;
+
+		ArrayList<String> lstInput = new ArrayList<String>();
+		lstInput.add("p31");
+		lstInput.add("constantVal1");
+		grdT31.Activations.add(new Activation(t31, lstInput, TransitionOperation.Add, "p31"));
+		grdT31.Activations.add(new Activation(t31, "p31", TransitionOperation.Move, "p32"));
+
+
+		t31.GuardMappingList.add(grdT31);
+		t31.Delay = 0;
+		mpn.Transitions.add(t31);
+
+		// T32 ------------------------------------------------
+		PetriTransition t32 = new PetriTransition(mpn);
+		t32.TransitionName = "t32";
+		t32.InputPlaceName.add("p32");
+
+		Condition T32Ct1 = new Condition(t32, "p32", TransitionCondition.NotNull);
+
+		GuardMapping grdT32 = new GuardMapping();
+		grdT32.condition = T32Ct1;
+
+		grdT32.Activations.add(new Activation(t32, "p32", TransitionOperation.Move, "p33"));
+
+		t32.GuardMappingList.add(grdT32);
+		t32.Delay = 0;
+		mpn.Transitions.add(t32);
+
+		// T33 ------------------------------------------------
+		PetriTransition t33 = new PetriTransition(mpn);
+		t33.TransitionName = "t33";
+		t33.InputPlaceName.add("p33");
+
+		Condition T33Ct1 = new Condition(t33, "p33", TransitionCondition.NotNull);
+		Condition T33Ct2 = new Condition(t33, "p33", TransitionCondition.LessThan,"constantVal2");
+		T33Ct1.SetNextCondition(LogicConnector.AND,T33Ct2);
+
+		GuardMapping grdT33 = new GuardMapping();
+		grdT33.condition = T33Ct1;
+
+		grdT33.Activations.add(new Activation(t33, "p33", TransitionOperation.Move, "p34"));
+		grdT33.Activations.add(new Activation(t33, "p34", TransitionOperation.SendOverNetwork, "p6"));
+		grdT33.Activations.add(new Activation(t33, "p33", TransitionOperation.Move, "p31"));
+
+
+
+		t33.GuardMappingList.add(grdT33);
+		t33.Delay = 0;
+		mpn.Transitions.add(t33);
+
+		// T34 ------------------------------------------------
+		PetriTransition t34 = new PetriTransition(mpn);
+		t34.TransitionName = "t34";
+		t34.InputPlaceName.add("p33");
+
+		Condition t34Ct1 = new Condition(t34, "p33", TransitionCondition.NotNull);
+		Condition t34Ct2 = new Condition(t34, "p33", TransitionCondition.MoreThan, "constantVal2");
+		t34Ct1.SetNextCondition(LogicConnector.AND, t34Ct2);
+
+		GuardMapping grdT34 = new GuardMapping();
+		grdT34.condition = t34Ct1;
+
+		grdT34.Activations.add(new Activation(t34, "", TransitionOperation.StopPetriNet, ""));
+
+		t34.GuardMappingList.add(grdT34);
+		t34.Delay = 0;
+		mpn.Transitions.add(t34);
+
+		mpn.Delay = 1000;
+
+		return mpn;
+	}
 	public static void main(String[] args) {
 		PetriNet pn = new PetriNet();
 		pn.PetriNetName = "PN1";
@@ -149,6 +265,12 @@ public class Exp3_Part1 {
 		SubPetri pn3 = new SubPetri(PN3());
 		SP.SetValue(pn3);
 		pn.ConstantPlaceList.add(SP);
+
+		DataSubPetriNet SP1 = new DataSubPetriNet();
+		SP1.SetName("PN4");
+		SubPetri pn4 = new SubPetri(PN4());
+		SP1.SetValue(pn4);
+		pn.ConstantPlaceList.add(SP1);
 
 		DataFloat p1 = new DataFloat();
 		p1.SetName("p1");
@@ -168,6 +290,11 @@ public class Exp3_Part1 {
 		p3Send.SetName("p3Send");
 		p3Send.Value = new TransferOperation("localhost", "1090", "p22");
 		pn.PlaceList.add(p3Send);
+
+		DataTransfer p3Send1 = new DataTransfer();
+		p3Send1.SetName("p3Send1");
+		p3Send1.Value = new TransferOperation("localhost", "1070", "p41");
+		pn.PlaceList.add(p3Send1);
 
 		DataFloat p4 = new DataFloat();
 		p4.SetName("p4");
@@ -192,17 +319,35 @@ public class Exp3_Part1 {
 		t1.InputPlaceName.add("p2");
 
 		Condition T1Ct1 = new Condition(t1, "p1", TransitionCondition.NotNull);
-		Condition T1Ct2 = new Condition(t1, "p2", TransitionCondition.NotNull);
+		Condition T1Ct2 = new Condition(t1, "p2", TransitionCondition.LessThan, "2");
 		T1Ct1.SetNextCondition(LogicConnector.AND, T1Ct2);
 
-		GuardMapping grdT1 = new GuardMapping();
-		grdT1.condition = T1Ct1;
 
-		grdT1.Activations.add(new Activation(t1, "PN3", TransitionOperation.Copy, "p3"));
-		grdT1.Activations.add(new Activation(t1, "p1", TransitionOperation.Move, "p4"));
-		grdT1.Activations.add(new Activation(t1, "p2", TransitionOperation.Move, "p3-p31"));
+		GuardMapping grdT11 = new GuardMapping();
+		grdT11.condition = T1Ct1;
 
-		t1.GuardMappingList.add(grdT1);
+		grdT11.Activations.add(new Activation(t1, "PN3", TransitionOperation.Copy, "p3"));
+		grdT11.Activations.add(new Activation(t1, "p1", TransitionOperation.Move, "p4"));
+		grdT11.Activations.add(new Activation(t1, "p2", TransitionOperation.Move, "p3-p31"));
+
+		t1.GuardMappingList.add(grdT11);
+
+
+
+		Condition T1Ct3 = new Condition(t1,"p1",TransitionCondition.NotNull);
+		Condition T1Ct4 = new Condition(t1, "p2", TransitionCondition.MoreThanOrEqual, "2");
+		T1Ct3.SetNextCondition(LogicConnector.AND,T1Ct4);
+
+		GuardMapping grdT12 = new GuardMapping();
+		grdT12.condition = T1Ct3;
+
+		grdT12.Activations.add(new Activation(t1, "PN4", TransitionOperation.Copy, "p3"));
+		grdT12.Activations.add(new Activation(t1, "p1", TransitionOperation.Move, "p4"));
+		grdT12.Activations.add(new Activation(t1, "p2", TransitionOperation.Move, "p3-p31"));
+
+		t1.GuardMappingList.add(grdT12);
+
+
 		t1.Delay = 0;
 		pn.Transitions.add(t1);
 
@@ -216,7 +361,8 @@ public class Exp3_Part1 {
 		GuardMapping grdT1Send = new GuardMapping();
 		grdT1Send.condition = T1SendCt1;
 
-		grdT1Send.Activations.add(new Activation(t1Send, "p3", TransitionOperation.SendPetriNetOverNetwork, "p3Send"));
+		grdT1Send.Activations.add(new Activation(t1Send, "p3", TransitionOperation.Move, "p3Send"));
+		grdT1Send.Activations.add(new Activation(t1Send, "p3Send", TransitionOperation.SendPetriNetOverNetwork, "p22"));
 
 		t1Send.GuardMappingList.add(grdT1Send);
 		t1Send.Delay = 0;
